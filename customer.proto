@@ -1,0 +1,29 @@
+syntax = "proto3";
+
+service CustomerService {
+    rpc StreamList (Empty) returns (stream CustomerItem) {}
+    rpc List (Empty) returns (CustomerList) {}
+    rpc FindById (CustomerList) returns (CustomerItem) {}
+    rpc Insert (NewCustomer) returns (CustomerItem) {}
+    rpc InsertList (stream NewCustomer) returns (Empty) {}
+    rpc Delete (CustomerId) returns (Empty) {}
+}
+
+message Empty {}
+
+message CustomerId {
+    string id = 1;
+}
+
+message NewCustomer {
+    string name = 1;
+}
+
+message CustomerItem {
+    string id = 1;
+    string name = 2;
+}
+
+message CustomerList {
+    repeated CustomerItem data = 1;
+}
