@@ -16,7 +16,7 @@ const packageDefinition = protoLoader.loadSync(
         oneofs: true
     });
 
-const customerProto = grpc.loadPackageDefinition(packageDefinition);
+const customerProto = grpc.loadPackageDefinition(packageDefinition).customer;
 
 function streamCustomers(call) {
     fakeDB.forEach(function (item) {
@@ -26,7 +26,8 @@ function streamCustomers(call) {
 }
 
 function listCustomers(call, callback) {
-    callback(null, { data: fakeDB });
+    let data = fakeDB.filter(item => item.gender == call.request.gender && item.is_active == call.request.is_active);
+    callback(null, { data: data });
 }
 
 function findCustomerById(call, callback) {
@@ -37,6 +38,7 @@ function findCustomerById(call, callback) {
 function insertCustomer(call, callback) {
     let item = call.request;
     item.id = fakeDB.length + 1;
+    item.is_active = true;
     fakeDB.push(item);
     callback(null, item);
 }
@@ -45,6 +47,7 @@ function insertCustomerList(call, callback) {
     console.log(call.request);
     call.on('data', function (item) {
         item.id = fakeDB.length + 1;
+        item.is_active = true;
         fakeDB.push(item);
     })
     call.on('end', function () {
