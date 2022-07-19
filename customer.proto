@@ -2,6 +2,13 @@ syntax = "proto3";
 
 package customer;
 
+option (info.title) = "Customer Manager API";
+option (info.description) = "This API has services to manager customers";
+option (info.version) = "1.0.0";
+option (info.contact.name) = "takugian";
+option (info.contact.email) = "contato@takugian.com.br";
+option (info.contact.url) = "www.takugian.com.br";
+
 service CustomerService {
     rpc StreamList (Empty) returns (stream CustomerItem) {}
     rpc List (ListFilter) returns (CustomerList) {}
